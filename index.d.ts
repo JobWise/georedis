@@ -50,8 +50,7 @@ export type GeoRedis = {
   addLocation(
     locationName: string,
     position: Point,
-    callback?: GeoCallback<boolean>
-  ): void
+  ): Promise<any>,
   nearby<TRet extends NearbyReturnTypes>(
     locationName: string,
     radius: number,

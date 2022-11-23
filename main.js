@@ -68,7 +68,7 @@ GeoSet.prototype.delete = function(callBack) {
 // adding locations
 
 GeoSet.prototype.addLocation = function(locationName, point) {
-  makePromise(this.getClientInterface().geoadd, [locationName, point, this.zset]);
+  return makePromise(this.getClientInterface().geoadd, [locationName, point, this.zset]);
 };
 
 GeoSet.prototype.addLocations = function(locationSet, callBack) {
