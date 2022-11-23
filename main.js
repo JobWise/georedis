@@ -6,6 +6,21 @@ var randomId = require('./lib/util/helper').randomId;
 
 var nativeCommands = ['info', 'geoadd', 'geohash', 'geopos', 'geodist', 'georadius', 'georadiusbymember'];
 
+const makePromise = (fn, args = []) =>
+  new Promise((resolve, reject) => {
+    fn(
+      ...[
+        ...args,
+        (err, result) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          resolve(result)
+        },
+      ]
+    )
+  })
 
 // main constructor
 
@@ -52,8 +67,8 @@ GeoSet.prototype.delete = function(callBack) {
 
 // adding locations
 
-GeoSet.prototype.addLocation = function(locationName, point, callBack) {
-  this.getClientInterface().geoadd(locationName, point, this.zset, callBack);
+GeoSet.prototype.addLocation = function(locationName, point) {
+  makePromise(this.getClientInterface().geoadd, [locationName, point, this.zset]);
 };
 
 GeoSet.prototype.addLocations = function(locationSet, callBack) {
