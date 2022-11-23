@@ -41,6 +41,7 @@ export type NearbyObject =
 export type NearbyReturnTypes = NearbyKey | NearbyObject
 
 export type GeoRedis = {
+  addSet(setName: string): GeoRedis
   delete(callback?: (err: Error) => void): void
   removeLocations(
     locationNames: string[],
