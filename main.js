@@ -68,11 +68,13 @@ GeoSet.prototype.delete = function(callBack) {
 // adding locations
 
 GeoSet.prototype.addLocation = function(locationName, point) {
-  return makePromise(this.getClientInterface().geoadd.bind(this.getClientInterface()), [locationName, point, this.zset]);
+  const geoAdd = this.getClientInterface().geoAdd.bind(this.getClientInterface())
+  return makePromise(geoAdd, [locationName, point, this.zset]);
 };
 
-GeoSet.prototype.addLocations = function(locationSet, callBack) {
-  this.getClientInterface().geoadd_multi(locationSet, this.zset, callBack);
+GeoSet.prototype.addLocations = function(locationSet) {
+  const geoAddMulti = this.getClientInterface().geoAddMulti.bind(this.getClientInterface())
+  return makePromise(geoAddMulti, [locationSet, this.zset]);
 };
 
 
@@ -110,12 +112,14 @@ GeoSet.prototype.removeLocations = function(locationNameArray, callBack) {
 
 // querying location positions
 
-GeoSet.prototype.location = function(locationName, callBack) {
-  this.getClientInterface().geopos([locationName], this.zset, callBack);
+GeoSet.prototype.location = function(locationName) {
+  const geoPos = this.getClientInterface().geoPos.bind(this.getClientInterface())
+  return makePromise(geoPos, [[locationName], this.zset]);
 };
 
-GeoSet.prototype.locations = function(locationNameArray, callBack) {
-  this.getClientInterface().geopos_multi(locationNameArray, this.zset, callBack);
+GeoSet.prototype.locations = function(locationNameArray) {
+  const geoPosMulti = this.getClientInterface().geoPosMulti.bind(this.getClientInterface())
+  return makePromise(geoPosMulti, [locationNameArray, this.zset]);
 };
 
 
@@ -147,7 +151,7 @@ GeoSet.prototype.radius = function(location, radius, options, callBack) {
   }
 };
 
-GeoSet.prototype.nearby = function(location, distance, options, callBack) {
+GeoSet.prototype.nearby = function(location, distance, options) {
   if (typeof options === 'function') {
     callBack = options;
     options = {};
@@ -156,9 +160,11 @@ GeoSet.prototype.nearby = function(location, distance, options, callBack) {
   }
 
   if (typeof location === 'string') {
-    this.getClientInterface().nearbymember(location, distance, options, this.zset, callBack);
+    const nearbyMember = this.getClientInterface().nearbyMember.bind(this.getClientInterface())
+    return makePromise(nearbyMember, [location, distance, options, this.zset]);
   } else {
-    this.getClientInterface().nearby(location, distance, options, this.zset, callBack);
+    const nearby = this.getClientInterface().nearby.bind(this.getClientInterface())
+    return makePromise(nearby, [location, distance, options, this.zset]);
   }
 };
 

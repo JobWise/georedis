@@ -1,7 +1,6 @@
-import { RedisClient } from 'redis'
 export type Point = {
-  latitude: number
-  longitude: number
+  latitude: Decimal | number
+  longitude: Decimal | number
 }
 
 export type GeoCallback<TReply> = (err: Error, reply: TReply) => void
@@ -40,6 +39,12 @@ export type NearbyObject =
 
 export type NearbyReturnTypes = NearbyKey | NearbyObject
 
+export type LocationSet = {
+  [key: string]: WithCoordiantes
+}
+
+export type RecordsUpdated = number
+
 export type GeoRedis = {
   addSet(setName: string): GeoRedis
   delete(callback?: (err: Error) => void): void
@@ -50,13 +55,11 @@ export type GeoRedis = {
   addLocation(
     locationName: string,
     position: Point,
-  ): Promise<any>,
-  nearby<TRet extends NearbyReturnTypes>(
+  ): Promise<RecordsUpdated>,
+  addLocations(locationSet: LocationSet): Promise<RecordsUpdated>,
+  nearby(
     locationName: string,
     radius: number,
     options?: Partial<NearbyOptions>,
-    callback?: GeoCallback<TRet[]>
-  ): void
+  ): Promise<any>
 }
-
-export function initialize(client: RedisClient): GeoRedis
