@@ -63,3 +63,5 @@ export type GeoRedis = {
     options?: Partial<NearbyOptions>,
   ): Promise<any>
 }
+
+export function initialize(client: any): GeoRedis
