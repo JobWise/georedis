@@ -58,10 +58,10 @@ export type GeoRedis = {
   ): Promise<RecordsUpdated>,
   addLocations(locationSet: LocationSet): Promise<RecordsUpdated>,
   nearby(
-    locationName: string,
+    location: Point,
     radius: number,
     options?: Partial<NearbyOptions>,
-  ): Promise<any>
+  ): Promise<NearbyReturnTypes>
 }
 
 export function initialize(client: any): GeoRedis
