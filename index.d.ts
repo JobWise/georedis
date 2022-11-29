@@ -61,7 +61,7 @@ export type GeoRedis = {
     location: Point,
     radius: number,
     options?: Partial<NearbyOptions>,
-  ): Promise<NearbyReturnTypes>
+  ): Promise<NearbyReturnTypes[]>
 }
 
 export function initialize(client: any): GeoRedis
